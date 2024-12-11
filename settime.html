@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Setting App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .time-input {
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Set Time</h1>
+        <input type="time" class="time-input" id="timeInput">
+        <button onclick="setTime()">Set Time</button>
+    </div>
+
+    <audio id="alarmSound" src="alarm_sound.mp3" preload="auto"></audio>
+
+    <script>
+        var alarmAudio = document.getElementById('alarmSound');
+
+        function setAlarm() {
+            var alarmTime = document.getElementById('alarmTime').value;
+            if (alarmTime === "") {
+                alert("Please enter alarm time.");
+                return;
+            }
+
+            var currentTime = new Date();
+            var hours = currentTime.getHours();
+            var minutes = currentTime.getMinutes();
+            var currentTotalMinutes = hours * 60 + minutes;
+
+            var alarmHours = parseInt(alarmTime.split(':')[0]);
+            var alarmMinutes = parseInt(alarmTime.split(':')[1]);
+            var alarmTotalMinutes = alarmHours * 60 + alarmMinutes;
+
+            var timeUntilAlarm = alarmTotalMinutes - currentTotalMinutes;
+            if (timeUntilAlarm < 0) {
+                timeUntilAlarm += 24 * 60; // Add 24 hours if alarm is set for the next day
+            }
+
+            setTimeout(function() {
+                playAlarm();
+            }, timeUntilAlarm * 60000); // Convert minutes to milliseconds
+        }
+
+        function playAlarm() {
+            alarmAudio.play();
+            alert("Wake up! Alarm is ringing!");
+        }
+        function setTime() {
+            var timeInput = document.getElementById('timeInput').value;
+            alert('Time set to: ' + timeInput);
+            // Here you can perform further actions with the selected time
+            // For example, you can send it to a server using AJAX
+        }
+        function setReminder() {
+            var timeInput = document.getElementById('timeInput').value;
+            var reminderInput = document.querySelector('.reminder-input').value;
+            if (timeInput === "" || reminderInput === "") {
+                alert("Please enter both time and reminder.");
+                return;
+            }
+            alert('Reminder set for ' + timeInput + ': ' + reminderInput);
+            // Here you can perform further actions with the selected time and reminder
+            // For example, you can store them locally or send them to a server using AJAX
+        }
+    </script>
+</body>
+</html>

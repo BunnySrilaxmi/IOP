@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Task Manager</h1>
+        <label for="taskName">Task:</label>
+        <input type="text" id="taskName" placeholder="Enter task...">
+        <label for="duration">Duration (minutes):</label>
+        <input type="number" id="duration" min="1" placeholder="Enter duration...">
+        <button onclick="addTask()">Add Task</button>
+    </div>
+    <div class="container">
+        <h2>Task List</h2>
+        <ul id="taskList"></ul>
+    </div>
+    <div class="container">
+        <h2>Lock Apps</h2>
+        <label for="appToLock">Select an app to lock:</label>
+        <select id="appToLock" required>
+            <option value="">Select an app</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Snapchat">Snapchat</option>
+            <option value="Twitter">Twitter</option>
+            <option value="Facebook">Facebook</option>
+            <option value="PUbg">PUbg</option>
+            <option value="Utube">Utube</option>
+            <option value="Candycrush">Candycrush</option>
+            <option value="TempleRun">TempleRun</option>
+            
+        </select>
+        <label for="duration">Duration (minutes):</label>
+        <input type="number" id="duration" min="1" placeholder="Enter duration...">
+        <button onclick="lockApp()">Lock App</button>
+    </div>
+    <div class="container">
+        <button><a href="/timer.html">Start Me...</a></button>
+    </div>
+    <div class="container">
+        <h2>Status</h2>
+        <ul id="applock"></ul>
+        <script>
+            function getStatus() {
+                fetch('/status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isLocked) {
+                        document.getElementById('status').innerHTML = 'App is locked. Remaining time to unlock: ' + data.remainingTime + ' seconds';
+                    } else {
+                        document.getElementById('status').innerHTML = 'App is unlocked';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching status:', error);
+                    document.getElementById('status').innerHTML = 'Failed to fetch status';
+                });
+            }
+    
+            // Get status when page loads
+            document.addEventListener('DOMContentLoaded', getStatus);
+        </script>
+    </div>
+    <script src="script.js"></script>
+
+    <div id="timer"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
